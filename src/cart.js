@@ -1,8 +1,25 @@
-function notImplemented() {
-  throw new Error('Корзина ещё не реализована. Сначала прочитайте тесты.');
+function addToCart(cart, product, quantity) {
+  if (quantity <= 0) {
+    throw new RangeError('Quantity must be greater than zero');
+  }
+
+  const existingProduct = cart.find((item) => item.id === product.id);
+
+  const totalQuantity = existingProduct ? existingProduct.quantity + quantity : quantity;
+
+  if (totalQuantity > product.stock) {
+    throw new RangeError('Not enough products in stock');
+  }
+
+  if (existingProduct) {
+    return cart.map((item) =>
+      item.id === product.id ? { ...item, quantity: totalQuantity } : item
+    );
+  }
+
+  return [...cart, { ...product, quantity }];
 }
 
-function addToCart() { return notImplemented(); }
 function changeQuantity() { return notImplemented(); }
 function removeFromCart() { return notImplemented(); }
 function calculateCartSubtotal() { return notImplemented(); }
